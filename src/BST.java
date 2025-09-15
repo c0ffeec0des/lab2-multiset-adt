@@ -29,7 +29,7 @@ public class BST {
 
 
     public boolean isEmpty() {
-        return false; // TODO implement me!
+        return this.root == null;
     }
 
     public boolean contains(int item) {
@@ -47,33 +47,92 @@ public class BST {
 
 
     public void insert(int item) {
+        if (this.isEmpty()) {
+            this.root = item;
+            this.left = new BST();
+            this.right = new BST();
+        } else if (item <= this.root) {
+            this.left.insert(item);
+        } else {
+            this.right.insert(item);
+        }
 
     }
 
 
     public void delete(int item) {
+        if (this.isEmpty()) {
+            assert true;
+        }
+        else if (this.root == item) {
+            this.deleteRoot();
+        } else if (item < this.root) {
+            this.left.delete(item);
+        } else {
+            this.right.delete(item);
+        }
 
     }
 
     private void deleteRoot() {
+        if (this.left.isEmpty() && this.right.isEmpty()) {
+            this.root = null;
+            this.left = null;
+            this.right = null;
+        } else if (this.left.isEmpty()) {
+            this.root = this.right.root;
+            this.left = this.right.left;
+            this.right = this.right.right;
+        } else if (this.right.isEmpty()) {
+            BST origLeft = this.left;
+            this.root = origLeft.root;
+            this.left = origLeft.left;
+            this.right = origLeft.right;
+        } else {
+            this.root = this.left.extractMax();
+        }
 
     }
 
 
     private int extractMax() {
-        return -1;
+        if (this.right.isEmpty()) {
+            int max_item = this.root;
+            BST origLeft = this.left;
+            this.root = origLeft.root;
+            this.left = origLeft.left;
+            this.right = origLeft.right;
+            return max_item;
+        } else {
+            return this.right.extractMax();
+        }
     }
 
     public int height() {
-        return -1;
+        if (this.isEmpty()) {
+            return 0;
+        } else {
+            return Math.max(this.left.height(), this.right.height()) + 1;
+        }
     }
 
     public int count(int item) {
-        return -1;
+        if (this.isEmpty()) {
+            return 0;
+        } else if (this.root > item) {
+            return this.left.count(item);
+        } else if (this.root == item) {
+            return 1 + this.left.count(item) + this.right.count(item);
+        } else {
+            return this.right.count(item);
+        }
     }
 
     public int getSize() {
-        return -1;
+        if (this.isEmpty()) {
+            return 0;
+        }
+        return 1 + this.left.getSize() + this.right.getSize();
     }
 
     public static void main(String[] args) {
