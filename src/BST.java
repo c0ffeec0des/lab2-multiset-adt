@@ -62,7 +62,7 @@ public class BST {
 
     public void delete(int item) {
         if (this.isEmpty()) {
-            assert true;
+            ;
         }
         else if (this.root == item) {
             this.deleteRoot();
